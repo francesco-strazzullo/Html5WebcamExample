@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Display Webcam Stream</title>
+    </head>
+    <body>
+        <video id="video" width="320"></video>
+        <button id="photo" onclick="takePhoto();">Take photo</button>
+        <canvas id="canvas"></canvas>
+        <script>
+            var video = document.getElementById('video');
+
+            //Cross Browser user media function
+            navigator.getMedia = (navigator.getUserMedia ||
+                    navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia ||
+                    navigator.msGetUserMedia);
+
+            var options = {
+                video: true,
+                audio: false
+            };
+
+            var onSuccess = function(stream) {
+                //Hack for Firefox
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    //Cross Browser URL creation
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.src = vendorURL.createObjectURL(stream);
+                }
+
+                video.play();
+            };
+
+            var onError = function(err) {
+                console.log("An error occured! " + err);
+            };
+
+            navigator.getMedia(options, onSuccess, onError);
+
+            function takePhoto() {
+                
+                var canvas = document.getElementById('canvas');
+                
+                var canvasWidth = 320;
+                var canvasHeight = video.videoHeight / (video.videoWidth / canvasWidth);
+                canvas.setAttribute('width', canvasWidth);
+                canvas.setAttribute('height', canvasHeight);
+                canvas.getContext('2d').drawImage(video, 0, 0, canvasWidth, canvasHeight);
+            }
+            
+           
+
+        </script>
+    </body>
+</html>

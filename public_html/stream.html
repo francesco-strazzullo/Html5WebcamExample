@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Display Webcam Stream</title>
+    </head>
+    <body>
+        <video id="video" width="320"></video>
+        <button id="photo" onclick="startStreaming();">Start Streaming</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <span id="status">Click To Start Streaming</span>
+        <script>
+            var video = document.getElementById('video');
+
+            //Cross Browser user media function
+            navigator.getMedia = (navigator.getUserMedia ||
+                    navigator.webkitGetUserMedia ||
+                    navigator.mozGetUserMedia ||
+                    navigator.msGetUserMedia);
+
+            //We want to capture only the video stream
+            var options = {
+                video: true,
+                audio: false
+            };
+
+            var onSuccess = function(stream) {
+                //Hack for Firefox
+                if (navigator.mozGetUserMedia) {
+                    video.mozSrcObject = stream;
+                } else {
+                    //Cross Browser URL creation
+                    var vendorURL = window.URL || window.webkitURL;
+                    video.src = vendorURL.createObjectURL(stream);
+                }
+
+                video.play();
+            };
+
+            var onError = function(err) {
+                console.log("An error occured! " + err);
+            };
+
+            navigator.getMedia(options, onSuccess, onError);
+
+            function startStreaming() {
+
+                var canvas = document.getElementById('canvas');
+                var status = document.getElementById('status');
+
+                var canvasWidth = 320;
+                var canvasHeight = video.videoHeight / (video.videoWidth / canvasWidth);
+                canvas.setAttribute('width', canvasWidth);
+                canvas.setAttribute('height', canvasHeight);
+
+                setInterval(function() {
+                    canvas.getContext('2d').drawImage(video, 0, 0, canvasWidth, canvasHeight);
+                    //get the data and remove header (data:image/png;base64,)
+                    var data = canvas.toDataURL('image/png').toString();
+                    data = data.substring(22, data.length);
+                    
+                    //Do some server magic here...
+                    status.innerHTML = "Caputred " + data.length + " bytes";
+
+                }, 100);
+            }
+
+        </script>
+    </body>
+</html>
