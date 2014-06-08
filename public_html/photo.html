@@ -4,7 +4,7 @@
         <title>Display Webcam Stream</title>
     </head>
     <body>
-        <video id="video" width="320"></video>
+        <video autoplay="true" id="video" width="320"></video>
         <button id="photo" onclick="takePhoto();">Take photo</button>
         <canvas id="canvas"></canvas>
         <script>
@@ -30,8 +30,6 @@
                     var vendorURL = window.URL || window.webkitURL;
                     video.src = vendorURL.createObjectURL(stream);
                 }
-
-                video.play();
             };
 
             var onError = function(err) {
