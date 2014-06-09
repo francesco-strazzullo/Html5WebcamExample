@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Display Webcam Stream</title>
+        <title>HTML5 Webcam Example</title>
     </head>
     <body>
         <video autoplay="true" id="video" width="320"></video>
@@ -12,8 +12,7 @@
             //Cross Browser user media function
             navigator.getMedia = (navigator.getUserMedia ||
                     navigator.webkitGetUserMedia ||
-                    navigator.mozGetUserMedia ||
-                    navigator.msGetUserMedia);
+                    navigator.mozGetUserMedia);
 
             var options = {
                 video: true,
@@ -21,11 +20,11 @@
             };
 
             var onSuccess = function(stream) {
-                //Hack for Firefox
+                //Firefox
                 if (navigator.mozGetUserMedia) {
                     video.mozSrcObject = stream;
                 } else {
-                    //Cross Browser URL creation
+                    //Chrome
                     var vendorURL = window.URL || window.webkitURL;
                     video.src = vendorURL.createObjectURL(stream);
                 }

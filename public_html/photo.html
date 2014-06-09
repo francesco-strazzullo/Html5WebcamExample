@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Display Webcam Stream</title>
+       <title>HTML5 Webcam Example</title>
     </head>
     <body>
         <video autoplay="true" id="video" width="320"></video>
@@ -13,8 +13,7 @@
             //Cross Browser user media function
             navigator.getMedia = (navigator.getUserMedia ||
                     navigator.webkitGetUserMedia ||
-                    navigator.mozGetUserMedia ||
-                    navigator.msGetUserMedia);
+                    navigator.mozGetUserMedia);
 
             var options = {
                 video: true,
